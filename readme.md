@@ -28,7 +28,7 @@ ASK
 ![ASK](images/ask.png)
 
 FSK
-![FSK](images/ask.png)
+![FSK](images/fsk.png)
 
 PSK
 ![PSK](images/psk.png)
