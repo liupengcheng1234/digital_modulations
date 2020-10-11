@@ -22,51 +22,75 @@ class BaseClass:
 		self.Y = np.fft.fft(y)/self.n # fft computing and normalization
 		self.Y = self.Y[range(self.n//2)]
 	
-	def plot(self, y):
-		fig, myplot = plot.subplots(2, 1)
-		myplot[0].plot(self.t, y)
-		myplot[0].set_xlabel('Time')
-		myplot[0].set_ylabel('Amplitude')
+	def plot(self, carrier, y, data):
+		fig, myplot = plot.subplots(4, 1)
 
-		myplot[1].plot(self.frq, abs(self.Y),'r') # plotting the spectrum
-		myplot[1].set_xlabel('Freq (Hz)')
-		myplot[1].set_ylabel('|Y(freq)|')
+		xs = np.repeat(range(len(data)), 2)
+		ys = np.repeat(data, 2)
+		xs = xs[1:]
+		ys = ys[:-1]
+		xs = list(xs)
+		ys = list(ys)
+		xs.append(xs[-1]+1)
+		ys.append(ys[-1])
+		myplot[0].plot(xs, ys)
+		myplot[0].set_title("Data")
+
+		myplot[1].plot(self.t, carrier)
+		myplot[1].set_xlabel('Time')
+		myplot[1].set_ylabel('Amplitude')
+		myplot[1].set_title("Carrier wave")
+
+		myplot[2].plot(self.t, y)
+		myplot[2].set_xlabel('Time')
+		myplot[2].set_ylabel('Amplitude')
+		myplot[2].set_title("Modulated signal")
+
+		myplot[3].plot(self.frq, abs(self.Y),'r') # plotting the spectrum
+		myplot[3].set_xlabel('Freq (Hz)')
+		myplot[3].set_ylabel('|Y(freq)|')
+		myplot[3].set_title("Frequence domain")	
+		
+
+		plot.tight_layout()
 		plot.savefig(self.file)
 		plot.show()
 
 
 class Ask(BaseClass):
 	def __init__(self):
-		super().__init__("ask")
-		self.bit_arr = np.array([1, 0, 1, 1, 0]) # <- Input bit rate (original)
-		#bit_arr = np.array([0, 0, 1, 0, 0]) # <- Input bit rate
-		self.samples_per_bit = 2*self.Fs/self.bit_arr.size 
-		self.dd = np.repeat(self.bit_arr, self.samples_per_bit)
-		self.y = self.dd*np.sin(2 * np.pi * self.freq * self.t)
-		super().calculate_signal_properties(self.y)
-		super().plot(self.y)
+		super().__init__("ask", 10)
+		self.data = np.array([1, 0, 1, 1, 0, 1]) # <- Input bit rate
+		self.samples_per_bit = 2*self.Fs/self.data.size 
+		self.dd = np.repeat(self.data, self.samples_per_bit)
+		self.carrier = np.sin(2 * np.pi * self.freq * self.t)
+		self.modulated = self.dd*self.carrier
+		super().calculate_signal_properties(self.modulated)
+		super().plot(self.carrier, self.modulated, self.data)
 
 
 class Fsk(BaseClass):
 	def __init__(self):
 		super().__init__("fsk")	
-		self.bit_arr = np.array([3,2,7,5,-5])
-		self.samples_per_bit = 2*self.Fs/self.bit_arr.size 
-		self.dd = np.repeat(self.bit_arr, self.samples_per_bit)
-		self.y = np.sin(2 * np.pi * (self.freq + self.dd) * self.t)
-		super().calculate_signal_properties(self.y)
-		super().plot(self.y)
+		self.data = np.array([3,2,7,5,-5])
+		self.samples_per_bit = 2*self.Fs/self.data.size 
+		self.dd = np.repeat(self.data, self.samples_per_bit)
+		self.carrier = np.sin(2 * np.pi * self.freq * self.t)
+		self.modulated = np.sin(2 * np.pi * (self.freq + self.dd) * self.t)
+		super().calculate_signal_properties(self.modulated)
+		super().plot(self.carrier, self.modulated, self.data)
 
 
 class Psk(BaseClass):
 	def __init__(self):
 		super().__init__("psk")	
-		self.bit_arr = np.array([180,180,0,180,0])
-		self.samples_per_bit = 2*self.Fs/self.bit_arr.size 
-		self.dd = np.repeat(self.bit_arr, self.samples_per_bit)
-		self.y = np.sin(2 * np.pi * (self.freq) * self.t+(np.pi*self.dd/180))
-		super().calculate_signal_properties(self.y)
-		super().plot(self.y)
+		self.data = np.array([180,180,0,180,0])
+		self.samples_per_bit = 2*self.Fs/self.data.size 
+		self.dd = np.repeat(self.data, self.samples_per_bit)
+		self.modulated = np.sin(2 * np.pi * (self.freq) * self.t+(np.pi*self.dd/180))
+		self.carrier = np.sin(2 * np.pi * self.freq * self.t)
+		super().calculate_signal_properties(self.modulated)
+		super().plot(self.carrier, self.modulated, self.data)
 	
 
 if __name__ == "__main__":
