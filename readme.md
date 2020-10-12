@@ -1,4 +1,4 @@
-# Digital modulations: ASK, FSK, PSK & QAM
+# Digital modulations: ASK, FSK, PSK
 
 A python implementation to visualize digital modulations.
 
@@ -16,7 +16,7 @@ You may need to use pip instead of pip3 depending on your system setup.
 ### Execution 🚀
 
 Pass the desired modulation type as an argument.
-Valid options are: ask, fsk, psk (qam is in progress)
+Valid options are: ask, fsk, psk
 ```
 python3 digital_modulations.py ask
 ```

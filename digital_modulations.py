@@ -59,7 +59,7 @@ class BaseClass:
 
 class Ask(BaseClass):
 	def __init__(self):
-		super().__init__("ask", 10)
+		super().__init__("ask")
 		self.data = np.array([1, 0, 1, 1, 0, 1]) # <- Input bit rate
 		self.samples_per_bit = 2*self.Fs/self.data.size 
 		self.dd = np.repeat(self.data, self.samples_per_bit)
@@ -72,7 +72,7 @@ class Ask(BaseClass):
 class Fsk(BaseClass):
 	def __init__(self):
 		super().__init__("fsk")	
-		self.data = np.array([3,2,7,5,-5])
+		self.data = np.array([5, 5, -5, 5, -5, -5])
 		self.samples_per_bit = 2*self.Fs/self.data.size 
 		self.dd = np.repeat(self.data, self.samples_per_bit)
 		self.carrier = np.sin(2 * np.pi * self.freq * self.t)
@@ -113,5 +113,5 @@ if __name__ == "__main__":
 		#if (len(sys.argv)>3):
 		#	file=str(sys.argv[1])
 	else:
-		print("You need to pass the modulation type as the first argument [ask|fsk|psk|qam]")	
+		print("You need to pass the modulation type as the first argument [ask|fsk|psk]")	
 	print("...DONE")
