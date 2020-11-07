@@ -33,7 +33,7 @@ class BaseClass:
 		ys = list(ys)
 		xs.append(xs[-1]+1)
 		ys.append(ys[-1])
-		myplot[0].plot(xs, ys)
+		myplot[0].plot(xs, ys, color='dodgerblue')
 		myplot[0].set_title("Data")
 
 		myplot[1].plot(self.t, carrier)
@@ -58,8 +58,8 @@ class BaseClass:
 
 
 class Ask(BaseClass):
-	def __init__(self):
-		super().__init__("ask")
+	def __init__(self, freq=10):
+		super().__init__("ask", freq)
 		self.data = np.array([1, 0, 1, 1, 0, 1]) # <- Input bit rate
 		self.samples_per_bit = 2*self.Fs/self.data.size 
 		self.dd = np.repeat(self.data, self.samples_per_bit)
@@ -70,8 +70,8 @@ class Ask(BaseClass):
 
 
 class Fsk(BaseClass):
-	def __init__(self):
-		super().__init__("fsk")	
+	def __init__(self, freq=10):
+		super().__init__("fsk", freq)	
 		self.data = np.array([5, 5, -5, 5, -5, -5])
 		self.samples_per_bit = 2*self.Fs/self.data.size 
 		self.dd = np.repeat(self.data, self.samples_per_bit)
@@ -82,8 +82,8 @@ class Fsk(BaseClass):
 
 
 class Psk(BaseClass):
-	def __init__(self):
-		super().__init__("psk")	
+	def __init__(self, freq=10):
+		super().__init__("psk", freq)	
 		self.data = np.array([180,180,0,180,0])
 		self.samples_per_bit = 2*self.Fs/self.data.size 
 		self.dd = np.repeat(self.data, self.samples_per_bit)
@@ -99,11 +99,11 @@ if __name__ == "__main__":
 		type=(sys.argv[1].lower())
 		if type in ["ask", "fsk", "psk"]:
 			if type == "ask":
-				A = Ask()
+				A = Ask(float(sys.argv[2]))
 			elif type == "fsk":
-				F = Fsk()
+				F = Fsk(float(sys.argv[2]))
 			else:
-				P = Psk()			
+				P = Psk(float(sys.argv[2]))			
 		else:
 			print("We currently do not supprt that modulation")
 
