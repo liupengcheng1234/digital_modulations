@@ -49,7 +49,7 @@ class BaseClass:
 		myplot[3].plot(self.frq, abs(self.Y),'r') # plotting the spectrum
 		myplot[3].set_xlabel('Freq (Hz)')
 		myplot[3].set_ylabel('|Y(freq)|')
-		myplot[3].set_title("Frequence domain")	
+		myplot[3].set_title("Frequency domain")	
 		
 
 		plot.tight_layout()
@@ -95,7 +95,9 @@ class Psk(BaseClass):
 
 if __name__ == "__main__":
 	print("\nWORKING...")
-	if (len(sys.argv)>1):
+	len_argv = len(sys.argv)
+	if (len_argv>2):
+
 		type=(sys.argv[1].lower())
 		if type in ["ask", "fsk", "psk"]:
 			if type == "ask":
@@ -107,11 +109,8 @@ if __name__ == "__main__":
 		else:
 			print("We currently do not supprt that modulation")
 
-		# WIP:
-		#if (len(sys.argv)>2):
-		#	freq=int(sys.argv[3])
-		#if (len(sys.argv)>3):
-		#	file=str(sys.argv[1])
 	else:
-		print("You need to pass the modulation type as the first argument [ask|fsk|psk]")	
-	print("...DONE")
+		print("⚠️  Usage [ask|fsk|psk] number1")
+		print("   number1=frequency, recommended is 10")
+
+	print("...DONE\n")
